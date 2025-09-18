@@ -66,6 +66,7 @@ app.post("/recipe", async (req, res) => {
       top_p: 1,
     });
     const data = [...messages, response.choices[0].message];
+    //response: 챗gpt가 응답해준 대답. 
     console.log("data", data);
     res.json({ data });
   } catch (error) {
