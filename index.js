@@ -20,6 +20,13 @@ import * as dotenv from "dotenv";
 
 const app = express();
 
+//CLIENT_URL
+// const corsOption = {
+//   origin: process.env.CLIENT_URL,
+//   credentials: true
+// }
+
+// app.use(cors(corsOption));
 app.use(cors());
 
 // 프론트엔드에서 받은 json 형태의 데이터를 자바스크립트 객체로 파싱하여 사용 
@@ -34,7 +41,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-console.log(process.env.OPENAI_API_KEY);
 
 // 챗봇 api설정
 const initialMessage = (ingredientList) => {
@@ -56,10 +62,9 @@ const initialMessage = (ingredientList) => {
 app.post("/recipe", async (req, res) => {
   const { ingredientList } = req.body; // 프론트엔드에서 요청한 재료목록 데이터 
   const messages = initialMessage(ingredientList);
-  console.log("message",messages);
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       messages,
       temperature: 1, // 템퍼러쳐를 0이라고 하면.......... 딱딱하지만 정확해짐. 
       max_tokens: 4000,
@@ -67,7 +72,6 @@ app.post("/recipe", async (req, res) => {
     });
     const data = [...messages, response.choices[0].message];
     //response: 챗gpt가 응답해준 대답. 
-    console.log("data", data);
     res.json({ data });
   } catch (error) {
     console.log(error);
@@ -80,7 +84,7 @@ app.post("/message", async (req, res) => {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       messages: [...messages, userMessage],
       temperature: 1,
       max_tokens: 4000,
