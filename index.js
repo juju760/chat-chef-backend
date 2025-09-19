@@ -21,13 +21,12 @@ import * as dotenv from "dotenv";
 const app = express();
 
 //CLIENT_URL
-// const corsOption = {
-//   origin: process.env.CLIENT_URL,
-//   credentials: true
-// }
+const corsOption = {
+  origin: "https://jujuchef.netlify.app",
+  credentials: true,
+};
 
-// app.use(cors(corsOption));
-app.use(cors());
+app.use(cors(corsOption));
 
 // 프론트엔드에서 받은 json 형태의 데이터를 자바스크립트 객체로 파싱하여 사용 
 app.use(express.json()); // for parsing application/json
